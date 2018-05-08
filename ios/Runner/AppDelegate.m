@@ -1,7 +1,7 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
 
-#import <Social/Social.h>
+#import <Accounts/Accounts.h>
 
 @implementation AppDelegate
 
@@ -15,14 +15,15 @@
     
     __weak AppDelegate* wself = self;
     [channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
-        [wself tweet];
+        [wself openActivity];
     }];
     
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (void)tweet {
-    // tweet by using TwitterKit or other service
+- (void)openActivity {
+    UIActivityViewController* controller = [[UIActivityViewController alloc] initWithActivityItems:@[@"This tweet is posted on Flutter app!"] applicationActivities:NULL];
+    [self.window.rootViewController presentViewController:controller animated:true completion:NULL];
 }
 
 @end
