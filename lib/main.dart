@@ -42,7 +42,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  static const platform = const MethodChannel('com.kitoko552.flutter_post_tweet_example/tweet');
+  static const channel = const MethodChannel('com.kitoko552.flutter_post_tweet_example/tweet');
 
   @override
   Widget build(BuildContext context) => _buildScaffold();
@@ -99,7 +99,7 @@ class HomeState extends State<Home> {
 
   Future<void> _onPressedButton() async {
     try {
-      await platform.invokeMethod('tweet');
+      await channel.invokeMethod('tweet');
     } on PlatformException catch (e) {
       print(e);
     }
