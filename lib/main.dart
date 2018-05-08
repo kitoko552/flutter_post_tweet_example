@@ -7,16 +7,32 @@ import 'package:flutter/services.dart';
 
 void main() => runApp(new App());
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: new Home(),
-    );
+  State<StatefulWidget> createState() => AppState();
+}
+
+class AppState extends State<App> {
+  @override
+  Widget build(BuildContext context) => _buildApp();
+
+  Widget _buildApp() {
+    if (Platform.isIOS) {
+      return new WidgetsApp(
+        color: Colors.blue,
+        builder: (context, widget) {
+          return new Home();
+        },
+      );
+    } else {
+      return new MaterialApp(
+        title: 'Flutter Demo',
+        theme: new ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: new Home(),
+      );
+    }
   }
 }
 
@@ -29,43 +45,56 @@ class HomeState extends State<Home> {
   static const platform = const MethodChannel('com.kitoko552.flutter_post_tweet_example/tweet');
 
   @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Post Tweet Example')
-      ),
-      body: new Center(
-        child: new Container(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: _buildButton(context)
-        )
+  Widget build(BuildContext context) => _buildScaffold();
+
+  Widget _buildScaffold() {
+    final Text title = new Text('Post Tweet Example');
+    final Widget body = new Center(
+      child: new Container(
+        child: _buildButton(context)
       )
     );
-  }
 
-  Widget _buildButton(BuildContext context) {
     if (Platform.isIOS) {
-      return new CupertinoButton(
-          child: _buildButtonText(),
-          color: Theme.of(context).accentColor,
-          onPressed: _onPressedButton
+      return new CupertinoPageScaffold(
+        navigationBar: new CupertinoNavigationBar(
+          middle: title,
+        ),
+        child: body
       );
     } else {
-      return new RaisedButton(
-          child: _buildButtonText(),
-          color: Theme.of(context).accentColor,
-          onPressed: _onPressedButton
+      return new Scaffold(
+        appBar: new AppBar(
+          title: title,
+        ),
+        body: body
       );
     }
   }
 
-  Text _buildButtonText() {
-    return new Text(
-      'TWEET',
-      style: new TextStyle(
-        color: Colors.white
-      ),
-    );
+  Widget _buildButton(BuildContext context) {
+    Text buildText(Color color) {
+      return new Text(
+        'TWEET',
+        style: new TextStyle(
+          color: color
+        ),
+      );
+    }
+
+    if (Platform.isIOS) {
+      return new CupertinoButton(
+        child: buildText(Colors.blue),
+        pressedOpacity: 0.4,
+        onPressed: _onPressedButton
+      );
+    } else {
+      return new RaisedButton(
+        child: buildText(Colors.white),
+        color: Theme.of(context).accentColor,
+        onPressed: _onPressedButton
+      );
+    }
   }
 
   Future<void> _onPressedButton() async {
