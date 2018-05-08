@@ -15,7 +15,11 @@
     
     __weak AppDelegate* wself = self;
     [channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
-        [wself openActivity];
+        if ([call.method isEqualToString:@"tweet"]) {
+            [wself openActivity];
+        } else {
+            result(FlutterMethodNotImplemented);
+        }
     }];
     
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
