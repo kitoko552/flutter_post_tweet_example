@@ -18,19 +18,19 @@ class AppState extends State<App> {
 
   Widget _buildApp() {
     if (Platform.isIOS) {
-      return new WidgetsApp(
+      return WidgetsApp(
         color: Colors.blue,
         builder: (context, widget) {
-          return new Home();
+          return Home();
         },
       );
     } else {
-      return new MaterialApp(
+      return MaterialApp(
         title: 'Flutter Demo',
-        theme: new ThemeData(
+        theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: new Home(),
+        home: Home(),
       );
     }
   }
@@ -42,29 +42,29 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
-  static const channel = const MethodChannel('com.kitoko552.flutter_post_tweet_example/tweet');
+  static const channel = MethodChannel('com.kitoko552.flutter_post_tweet_example/tweet');
 
   @override
   Widget build(BuildContext context) => _buildScaffold();
 
   Widget _buildScaffold() {
-    final Text title = new Text('Post Tweet Example');
-    final Widget body = new Center(
-      child: new Container(
+    final Text title = Text('Post Tweet Example');
+    final Widget body = Center(
+      child: Container(
         child: _buildButton(context)
       )
     );
 
     if (Platform.isIOS) {
-      return new CupertinoPageScaffold(
-        navigationBar: new CupertinoNavigationBar(
+      return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
           middle: title,
         ),
         child: body
       );
     } else {
-      return new Scaffold(
-        appBar: new AppBar(
+      return Scaffold(
+        appBar: AppBar(
           title: title,
         ),
         body: body
@@ -74,22 +74,22 @@ class HomeState extends State<Home> {
 
   Widget _buildButton(BuildContext context) {
     Text buildText(Color color) {
-      return new Text(
+      return Text(
         'TWEET',
-        style: new TextStyle(
+        style: TextStyle(
           color: color
         ),
       );
     }
 
     if (Platform.isIOS) {
-      return new CupertinoButton(
+      return CupertinoButton(
         child: buildText(Colors.blue),
         pressedOpacity: 0.4,
         onPressed: _onPressedButton
       );
     } else {
-      return new RaisedButton(
+      return RaisedButton(
         child: buildText(Colors.white),
         color: Theme.of(context).accentColor,
         onPressed: _onPressedButton
